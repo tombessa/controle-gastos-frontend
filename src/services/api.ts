@@ -4,29 +4,13 @@ import { AuthTokenError } from './errors/AuthTokenError'
 
 import { signOut } from '../contexts/AuthContext'
 
-export interface ProcessEnv {
-  [key: string]: string | undefined
-}
-
-export function extractStringEnvVar(
-    key: keyof NodeJS.ProcessEnv,
-): string {
-  console.log(process.env.NODE_ENV);
-  console.log(process.env.URL_BACKEND);
-    const value = process.env[key];
-    
-    if (value === undefined) {
-        const message = `The environment variable "${key}" cannot be "undefined".`;
-
-        throw new Error(message);
-    }
-
-    return value;
-}
-
 export function setupAPIClient(ctx = undefined){
   let cookies = parseCookies(ctx);
-  const url = extractStringEnvVar('URL_BACKEND');
+  const url = "https://controle-gastos-backend-tombessa.vercel.app";
+  if (url === undefined) {
+    const message = `The environment variable "${url}" cannot be "undefined".`;
+    throw new Error(message);
+  }
   const api = axios.create({
     baseURL: url,
     headers: {
